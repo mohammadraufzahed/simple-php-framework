@@ -19,8 +19,11 @@ class Router
      * Render the page view
      * @param string $template
      */
-    static public function renderView(string $template)
+    static public function renderView(string $template, $params = [])
     {
+        foreach ($params as $key => $param) {
+            $$key = $param;
+        }
         $viewDir = dir($_SERVER["DOCUMENT_ROOT"] . "/../views");
         $templatePath = $viewDir->path . "/" . $template;
         if (!file_exists($templatePath)) {
