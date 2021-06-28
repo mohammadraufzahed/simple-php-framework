@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "SimplePHPFramework\\kernel\\": "./kernel/",
-            "SimplePHPFramework\\controllers\\": "./controllers/"
+            "SimplePHPFramework\\controllers\\": "./controllers/",
+            "SimplePHPFramework\\models\\": "./models"
         }
     },
     "authors": [
