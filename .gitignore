@@ -1,3 +1,5 @@
 /vendor/
 views/**
+models/**
+controllers/**
 .idea/
