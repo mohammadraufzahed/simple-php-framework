@@ -1,0 +1,22 @@
+{
+    "name": "mohammadraufzahed/simple-php-framework",
+    "description": "A Simple PHP MVC Framework",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "SimplePHPFramework\\kernel\\": "./kernel/",
+            "SimplePHPFramework\\controllers\\": "./controllers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohammad Raufzahed",
+            "email": "mohammadraufzahed@protonmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {
+        "ext-pdo": "*"
+    }
+}
