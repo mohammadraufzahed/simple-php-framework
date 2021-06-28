@@ -8,9 +8,9 @@ use PDOException;
 use PDOStatement;
 
 define("DB_HOST", "localhost");
-define("DB_USER", "phpmvc");
-define("DB_PASS", "phpmvc");
-define("DB_NAME", "phpmvc");
+define("DB_USER", "product_crud");
+define("DB_PASS", "09351515982");
+define("DB_NAME", "product_crud");
 
 class Database
 {
@@ -19,11 +19,13 @@ class Database
 
     public function __construct()
     {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
         try {
-            $this->conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $this->conn = new PDO($dsn, DB_USER, DB_PASS);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo $e->getMessage();
+            exit;
         }
     }
 
