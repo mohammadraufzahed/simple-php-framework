@@ -16,72 +16,110 @@ class Router
     }
 
     /**
-     * Render the page view
-     * @param string $template
+     * Handle The get request
+     * @param string $uri
+     * @param array $fn
+     * @return void
      */
-    static public function renderView(string $template, $params = [])
+    public function get(string $uri, array $fn): void
     {
-        foreach ($params as $key => $param) {
-            $$key = $param;
-        }
-        $viewDir = dir($_SERVER["DOCUMENT_ROOT"] . "/../views");
-        $templatePath = $viewDir->path . "/" . $template;
-        if (!file_exists($templatePath)) {
-            echo "Template not found";
+        if (isset($this->getRequests[$uri])) {
+            echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: GET";
+            exit;
         } else {
-            include_once $templatePath;
+            $this->getRequests[$uri] = $fn;
         }
     }
 
     /**
-     * Handle The get request
-     * @param string $uri
-     * @param array $fn
+     * Handle the Get routing
+     * @return void
      */
-    public function get(string $uri, array $fn): void
+    private function handleGet(): bool
     {
-        $this->getRequests[$uri] = $fn;
+        // Checking the request method
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            // Grab the URI path of the page
+            $uri = $_SERVER["PATH_INFO"] ?? '/';
+            // Checking the URI exists or not
+            if (isset($this->getRequests[$uri])) {
+                // Grab the controller
+                $fn = $this->getRequests[$uri];
+                // Verify the controller
+                if (!$this->checkUriFunc($fn)) {
+                    // If the controller does not exists echo the error
+                    echo "The controller of this route does not found";
+                } else {
+                    // Run the controller
+                    call_user_func($fn);
+                    return true;
+                }
+            } else {
+                // if page not found echo the error
+                echo "Page not found";
+                exit;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
      * Handle the post request
      * @param string $uri
-     * @param string $fn
+     * @param array $fn
+     * @return void
      */
-    public function post(string $uri, string $fn): void
+    public function post(string $uri, array $fn): void
     {
-        $this->postRequests[$uri] = $fn;
+        if (isset($this->postRequests[$uri])) {
+            echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: POST";
+            exit;
+        } else {
+            $this->postRequests[$uri] = $fn;
+        }
+    }
+
+    /**
+     * Handle the post routing
+     */
+    private function handlePost()
+    {
+        // Checking the request method
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Grab the URI path of the page
+            $uri = $_SERVER["PATH_INFO"] ?? '/';
+            // Checking the URI exists or not
+            if (isset($this->postRequests[$uri])) {
+                // Grab the controller
+                $fn = $this->postRequests[$uri];
+                // Verify the controller
+                if (!$this->checkUriFunc($fn)) {
+                    // If the controller does not exists echo the error
+                    echo "The controller of this route does not found";
+                } else {
+                    // Run the controller
+                    call_user_func($fn);
+                    return true;
+                }
+            } else {
+                // if page not found echo the error
+                echo "Page not found";
+                exit;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
      * Start the Router
+     * @return void
      */
     public function start(): void
     {
-        $method = strtolower($_SERVER["REQUEST_METHOD"]);
-        $uri = $_SERVER["PATH_INFO"] ?? "/";
-        if ($method == "post") {
-            if (!isset($this->postRequests[$uri])) {
-                echo "Page not found";
-                exit;
-            }
-            $fn = $this->postRequests[$uri];
-            if ($this->checkUriFunc($fn)) {
-                echo "Page not found";
-                exit;
-            }
-            echo call_user_func($fn);
-        } elseif ($method == "get") {
-            if (!$this->getRequests[$uri]) {
-                echo "Page not found";
-                exit;
-            }
-            $fn = $this->getRequests[$uri];
-            if ($this->checkUriFunc($fn)) {
-                echo "Page not found";
-                exit;
-            }
-            echo call_user_func($fn);
+        if ($this->handleGet()) {
+        } elseif ($this->handlePost()) {
         } else {
             echo "Request not allowed";
             exit;
@@ -95,7 +133,7 @@ class Router
      */
     private function checkUriFunc($func): bool
     {
-
-        return empty($func);
+        $isFuncValid = is_object($func[0]);
+        return $isFuncValid;
     }
 }
