@@ -37,6 +37,7 @@ class Database
     public function execute(): void
     {
         $this->stmt->execute();
+        $this->stmt->fetchALl();
     }
 
     public function bind(string $param, mixed $value, int $type)
