@@ -16,6 +16,7 @@ class View
         $templatePath = $viewDir->path . "/" . $template;
         if (!file_exists($templatePath)) {
             echo "Template not found";
+            exit;
         } else {
             $pugEngine = new Pug([
                 "pretty" => true,
