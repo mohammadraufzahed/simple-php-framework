@@ -18,6 +18,7 @@
     ],
     "minimum-stability": "beta",
     "require": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "pug-php/pug": "^3.4"
     }
 }
