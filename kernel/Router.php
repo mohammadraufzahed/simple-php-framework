@@ -9,6 +9,8 @@ class Router
 {
     private array $getRequests = [];
     private array $postRequests = [];
+    private string $requestMethod = "";
+    private string $requestUri = "";
 
 
     public function __construct()
@@ -21,14 +23,13 @@ class Router
      * @param array $fn
      * @return void
      */
-    public function get(string $uri, array $fn): void
+    public function get(string $uri, array $function): void
     {
         if (isset($this->getRequests[$uri])) {
             echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: GET";
             exit;
-        } else {
-            $this->getRequests[$uri] = $fn;
         }
+        $this->getRequests[$uri] = $function;
     }
 
     /**
@@ -37,21 +38,23 @@ class Router
      */
     private function handleGet(): bool
     {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $requestUri = $_SERVER["PATH_INFO"];
         // Checking the request method
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if ($requestMethod == "GET") {
             // Grab the URI path of the page
-            $uri = $_SERVER["PATH_INFO"] ?? '/';
+            $uri = $requestUri ?? '/';
             // Checking the URI exists or not
             if (isset($this->getRequests[$uri])) {
                 // Grab the controller
-                $fn = $this->getRequests[$uri];
+                $routerFunction = $this->getRequests[$uri];
                 // Verify the controller
-                if (!$this->checkUriFunc($fn)) {
+                if (!$this->checkUriFunc($routerFunction)) {
                     // If the controller does not exists echo the error
                     echo "The controller of this route does not found";
                 } else {
                     // Run the controller
-                    call_user_func($fn);
+                    call_user_func($routerFunction);
                     return true;
                 }
             } else {
@@ -70,14 +73,13 @@ class Router
      * @param array $fn
      * @return void
      */
-    public function post(string $uri, array $fn): void
+    public function post(string $uri, array $function): void
     {
         if (isset($this->postRequests[$uri])) {
             echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: POST";
             exit;
-        } else {
-            $this->postRequests[$uri] = $fn;
         }
+        $this->postRequests[$uri] = $function;
     }
 
     /**
@@ -85,21 +87,23 @@ class Router
      */
     private function handlePost()
     {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $requestUri = $_SERVER["PATH_INFO"];
         // Checking the request method
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($requestMethod == "POST") {
             // Grab the URI path of the page
-            $uri = $_SERVER["PATH_INFO"] ?? '/';
+            $uri = $requestUri ?? '/';
             // Checking the URI exists or not
             if (isset($this->postRequests[$uri])) {
                 // Grab the controller
-                $fn = $this->postRequests[$uri];
+                $routerFunction = $this->postRequests[$uri];
                 // Verify the controller
-                if (!$this->checkUriFunc($fn)) {
+                if (!$this->checkUriFunc($routerFunction)) {
                     // If the controller does not exists echo the error
                     echo "The controller of this route does not found";
                 } else {
                     // Run the controller
-                    call_user_func($fn);
+                    call_user_func($routerFunction);
                     return true;
                 }
             } else {
@@ -131,9 +135,9 @@ class Router
      * @param $func
      * @return bool
      */
-    private function checkUriFunc($func): bool
+    private function checkUriFunc($function): bool
     {
-        $isFuncValid = is_object($func[0]);
-        return $isFuncValid;
+        $isFunctionValid = is_object($function[0]);
+        return $isFunctionValid;
     }
 }

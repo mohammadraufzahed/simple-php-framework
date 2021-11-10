@@ -12,17 +12,17 @@ class View
      */
     static public function render(string $template, $params = [])
     {
-        $viewDir = dir($_SERVER["DOCUMENT_ROOT"] . "/../views");
+        $rootDirectory = $_SERVER["DOCUMENT_ROOT"];
+        $viewDir = dir($rootDirectory . "/../views");
         $templatePath = $viewDir->path . "/" . $template;
         if (!file_exists($templatePath)) {
             echo "Template not found";
             exit;
-        } else {
-            $pugEngine = new Pug([
-                "pretty" => true,
-                "cache" => $_SERVER["DOCUMENT_ROOT"] . "/../views/cache"
-            ]);
-            $pugEngine->display($templatePath, $params);
         }
+        $pugEngine = new Pug([
+            "pretty" => true,
+            "cache" => $_SERVER["DOCUMENT_ROOT"] . "/../views/cache"
+        ]);
+        $pugEngine->display($templatePath, $params);
     }
 }
