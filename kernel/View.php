@@ -16,12 +16,12 @@ class View
         $viewDir = dir($rootDirectory . "/../views");
         $templatePath = $viewDir->path . "/" . $template;
         if (!file_exists($templatePath)) {
-            echo "Template not found";
+            echo htmlspecialchars("Template not found");
             exit;
         }
         $pugEngine = new Pug([
             "pretty" => true,
-            "cache" => $_SERVER["DOCUMENT_ROOT"] . "/../views/cache"
+            "cache" => $rootDirectory . "/../views/cache"
         ]);
         $pugEngine->display($templatePath, $params);
     }

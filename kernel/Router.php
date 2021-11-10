@@ -26,7 +26,7 @@ class Router
     public function get(string $uri, array $function): void
     {
         if (isset($this->getRequests[$uri])) {
-            echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: GET";
+            echo htmlspecialchars("Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: GET");
             exit;
         }
         $this->getRequests[$uri] = $function;
@@ -51,7 +51,7 @@ class Router
                 // Verify the controller
                 if (!$this->checkUriFunc($routerFunction)) {
                     // If the controller does not exists echo the error
-                    echo "The controller of this route does not found";
+                    echo htmlspecialchars("The controller of this route does not found");
                 } else {
                     // Run the controller
                     call_user_func($routerFunction);
@@ -59,7 +59,7 @@ class Router
                 }
             } else {
                 // if page not found echo the error
-                echo "Page not found";
+                echo htmlspecialchars("Page not found");
                 exit;
             }
         } else {
@@ -76,7 +76,7 @@ class Router
     public function post(string $uri, array $function): void
     {
         if (isset($this->postRequests[$uri])) {
-            echo "Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: POST";
+            echo htmlspecialchars("Your not allowed to add the duplicate route in the one method<br/>Duplicate URI: $uri <br /> Method: POST");
             exit;
         }
         $this->postRequests[$uri] = $function;
@@ -100,7 +100,7 @@ class Router
                 // Verify the controller
                 if (!$this->checkUriFunc($routerFunction)) {
                     // If the controller does not exists echo the error
-                    echo "The controller of this route does not found";
+                    echo htmlspecialchars("The controller of this route does not found");
                 } else {
                     // Run the controller
                     call_user_func($routerFunction);
@@ -108,7 +108,7 @@ class Router
                 }
             } else {
                 // if page not found echo the error
-                echo "Page not found";
+                echo htmlspecialchars("Page not found");
                 exit;
             }
         } else {
@@ -125,7 +125,7 @@ class Router
         if ($this->handleGet()) {
         } elseif ($this->handlePost()) {
         } else {
-            echo "Request not allowed";
+            echo htmlspecialchars("Request not allowed");
             exit;
         }
     }

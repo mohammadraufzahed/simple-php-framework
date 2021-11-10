@@ -3,6 +3,7 @@
 
 namespace SimplePHPFramework\kernel;
 
+use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -25,8 +26,8 @@ class Database
             $this->conn = new PDO($dsn, DB_USER, DB_PASS);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo $e->getMessage();
-            exit;
+            echo htmlspecialchars($e->getMessage());
+            throw new Exception("Cannot initilize the database");
         }
     }
 
