@@ -6,7 +6,7 @@ use Exception;
 use SimplePHPFramework\kernel\View;
 use SimplePHPFramework\kernel\Database;
 
-require __DIR__ . "/../vendor/autoload.php";
+require(__DIR__ . "/../vendor/autoload.php");
 
 
 class MainController
@@ -17,11 +17,6 @@ class MainController
     {
         // Initialize the viewEngine
         $this->viewEngine = new View;
-        try {
-            $this->db = new Database();
-        } catch (Exception $e) {
-            throw new Exception("Faild to initilize the controller");
-        }
     }
     public function index()
     {

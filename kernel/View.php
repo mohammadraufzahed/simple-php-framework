@@ -2,7 +2,10 @@
 
 namespace SimplePHPFramework\kernel;
 
+require(__DIR__ . "/../vendor/autoload.php");
+
 use Pug\Pug;
+
 
 class View
 {
